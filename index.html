@@ -1,24 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dynamic Loops — Interactive Guide</title>
+  <title>Dynamic Loops & Real-Time Systems</title>
   <style>
     :root {
-      --bg-main: #060d1f;
-      --bg-elevated: #0b1633;
-      --bg-card: rgba(13, 27, 62, 0.82);
-      --bg-input: #081229;
-      --border: rgba(125, 165, 255, 0.16);
-      --border-strong: rgba(125, 165, 255, 0.34);
-      --text-main: #f1f5ff;
-      --text-muted: #94a6cc;
-      --accent: #3b6ef6;
-      --accent-bright: #5b8cff;
-      --accent-soft: rgba(59, 110, 246, 0.16);
-      --success: #22c55e;
-      --danger: #ef4444;
+      --bg: #090e1a;
+      --card: #11192e;
+      --card-2: #17223d;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --line: rgba(255, 255, 255, 0.1);
+      --cyan: #22d3ee;
+      --indigo: #818cf8;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --miss: #ef4444;
     }
 
     * {
@@ -28,652 +26,857 @@
     }
 
     body {
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-      background:
-        radial-gradient(circle at 15% 0%, rgba(37, 78, 194, 0.28), transparent 45%),
-        radial-gradient(circle at 85% 15%, rgba(16, 42, 115, 0.35), transparent 50%),
-        var(--bg-main);
-      color: var(--text-main);
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+      background: radial-gradient(circle at 85% 0%, #162852 0%, var(--bg) 55%);
+      color: var(--text);
       line-height: 1.65;
-      min-height: 100vh;
+      padding: 24px 16px 56px;
     }
 
     .wrap {
-      max-width: 960px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 0 20px;
     }
 
-    .icon {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-      stroke: currentColor;
-      fill: none;
-      stroke-width: 1.9;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* Header */
-    .hero {
-      background: linear-gradient(180deg, rgba(14, 29, 68, 0.95) 0%, rgba(7, 16, 38, 0.95) 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 32px 0 36px;
-      margin-bottom: 28px;
-    }
-
-    .uni-box {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding-bottom: 18px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .uni-ministry {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      letter-spacing: 0.4px;
-    }
-
-    .uni-college {
-      font-size: 15.5px;
-      font-weight: 700;
-      color: #ffffff;
-    }
-
-    .uni-dept {
-      font-size: 13px;
-      color: #7da6ff;
-      font-weight: 500;
-    }
-
-    .hero-top {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-    }
-
-    .hero-badge {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: var(--accent-soft);
-      border: 1px solid var(--border-strong);
-      color: #8cb2ff;
-      display: grid;
-      place-items: center;
-      flex-shrink: 0;
-      margin-top: 3px;
-    }
-
-    .hero h1 {
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
-      color: #fff;
-    }
-
-    .hero p {
-      color: var(--text-muted);
-      font-size: 14.5px;
-      margin-top: 4px;
-    }
-
-    /* Cards */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
+    header {
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(129, 140, 248, 0.12));
+      border: 1px solid var(--line);
+      border-radius: 18px;
       padding: 24px;
       margin-bottom: 22px;
-      backdrop-filter: blur(10px);
     }
 
-    .card-head {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
+    .pill {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--cyan);
+      background: rgba(34, 211, 238, 0.12);
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 10px;
     }
 
-    .card-head .icon {
-      color: #7da6ff;
-      width: 20px;
-      height: 20px;
+    h1 {
+      font-size: 1.7rem;
+      margin-bottom: 8px;
     }
 
-    .card-head h2 {
-      font-size: 19px;
-      font-weight: 650;
-      color: #fff;
+    .sub {
+      color: var(--muted);
+      font-size: 0.96rem;
     }
 
-    .lead {
-      color: #d7e2fa;
-      font-size: 14.5px;
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 22px;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+
+    .desc {
+      color: var(--muted);
+      font-size: 0.94rem;
       margin-bottom: 16px;
     }
 
-    .simple-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-
-    .mini-box {
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-    }
-
-    .mini-box h3 {
-      font-size: 14px;
-      color: #9bbaff;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .mini-box p {
-      font-size: 13.5px;
-      color: var(--text-muted);
-    }
-
-    pre {
-      background: #040917;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px 16px;
-      overflow-x: auto;
-      font-family: Consolas, "Courier New", monospace;
-      font-size: 13px;
-      color: #c8dcff;
-    }
-
-    /* Controls */
-    .controls {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 14px;
-      margin-bottom: 16px;
-    }
-
-    .field label {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12.5px;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
-    .field input,
-    .field select,
-    .add-box input {
-      width: 100%;
-      background: var(--bg-input);
-      color: #fff;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .add-box input:focus {
-      border-color: var(--accent-bright);
-      box-shadow: 0 0 0 3px rgba(59, 110, 246, 0.2);
-    }
-
-    .btn-row {
+    .controls-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
+      align-items: center;
       margin-bottom: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    input[type="number"] {
+      width: 110px;
+      background: var(--card-2);
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.95rem;
     }
 
     button {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: linear-gradient(135deg, var(--accent) 0%, #2752cc 100%);
-      color: #fff;
-      border: 1px solid rgba(147, 185, 255, 0.25);
+      background: var(--card-2);
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 9px 15px;
       border-radius: 10px;
-      padding: 10px 16px;
-      font-size: 13.5px;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 0.9rem;
       cursor: pointer;
-      transition: transform 0.12s ease, filter 0.2s ease;
+      transition: 0.15s ease;
     }
 
     button:hover {
-      filter: brightness(1.12);
-      transform: translateY(-1px);
+      border-color: var(--cyan);
     }
 
-    button:active {
-      transform: translateY(0);
+    button.primary {
+      background: linear-gradient(135deg, var(--cyan), var(--indigo));
+      color: #061021;
+      border: none;
     }
 
-    button.ghost {
-      background: rgba(148, 166, 204, 0.1);
-      border-color: var(--border);
-      color: #d6e1fa;
-    }
-
-    button.danger {
-      background: rgba(239, 68, 68, 0.14);
-      border-color: rgba(239, 68, 68, 0.35);
-      color: #fca5a5;
-      padding: 6px 11px;
-      font-size: 12.5px;
-    }
-
-    button.danger:hover {
-      background: rgba(239, 68, 68, 0.26);
-    }
-
-    .status-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: #b7c9f0;
-      margin-bottom: 16px;
-    }
-
-    .status-bar .icon {
-      color: #6ea0ff;
-    }
-
-    /* Output Nodes */
-    .nodes-grid {
+    /* بطاقات Pass #1..#10 */
+    .passes-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
       gap: 10px;
+      margin-top: 12px;
     }
 
-    .node {
-      background: linear-gradient(160deg, rgba(25, 55, 130, 0.45), rgba(9, 20, 49, 0.9));
-      border: 1px solid var(--border-strong);
+    .pass-card {
+      background: var(--card-2);
+      border: 1px solid var(--line);
       border-radius: 12px;
-      padding: 12px 10px;
-      text-align: center;
+      padding: 12px;
+      font-size: 0.88rem;
     }
 
-    .node span {
+    .pass-card strong {
       display: block;
-      font-size: 11.5px;
-      color: var(--text-muted);
-      margin-bottom: 2px;
+      color: var(--cyan);
+      margin-bottom: 4px;
     }
 
-    .node strong {
-      font-size: 18px;
-      color: #ffffff;
+    /* راسم الموجة الحي */
+    .scope-box {
+      background: #070c17;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 18px;
     }
 
-    /* Dynamic List */
-    .add-box {
+    .scope-top {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
       gap: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
+      font-size: 0.88rem;
     }
 
-    .task-list {
-      list-style: none;
+    .legend {
       display: flex;
-      flex-direction: column;
-      gap: 9px;
+      flex-wrap: wrap;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 0.84rem;
     }
 
-    .task-item {
+    .dot-key {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-left: 5px;
+    }
+
+    canvas#waveCanvas {
+      width: 100%;
+      height: 190px;
+      display: block;
+      border-radius: 10px;
+      background: #050811;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* مقارنة حية */
+    .rt-compare-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .loop-card {
+      background: var(--card-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .loop-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 10px 14px;
-      font-size: 14px;
+      margin-bottom: 12px;
     }
 
-    .task-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #e8efff;
-    }
-
-    .idx-pill {
-      background: var(--accent-soft);
-      color: #8cb2ff;
-      border: 1px solid var(--border);
-      font-family: Consolas, monospace;
-      font-size: 12px;
-      padding: 2px 8px;
+    .tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 9px;
       border-radius: 999px;
     }
 
-    /* Footer */
-    .footer {
-      margin-top: 32px;
-      padding: 24px 0 36px;
-      border-top: 1px solid var(--border);
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 13px;
+    .tag-fixed {
+      background: rgba(148, 163, 184, 0.16);
+      color: #cbd5e1;
     }
 
-    .creators {
-      margin-top: 8px;
-      color: #e2ebff;
-      font-weight: 600;
-      font-size: 13.5px;
+    .tag-adaptive {
+      background: rgba(34, 211, 238, 0.16);
+      color: var(--cyan);
+    }
+
+    .stats-mini {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+    }
+
+    .stat-cell {
+      background: rgba(9, 14, 26, 0.55);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    .stat-cell span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    .stat-cell strong {
+      direction: ltr;
+      display: inline-block;
+      font-size: 0.96rem;
+    }
+
+    .pulse-track {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      min-height: 36px;
+      background: #080d18;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .beat {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: var(--ok);
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+    }
+
+    .beat.late {
+      background: var(--warn);
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.65);
+    }
+
+    .beat.miss {
+      background: var(--miss);
+      box-shadow: 0 0 8px rgba(239, 68, 68, 0.75);
+    }
+
+    .miss-badge {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #fca5a5;
+    }
+
+    .ok-badge {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #86efac;
+    }
+
+    .warn-badge {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #fcd34d;
+    }
+
+    .load-box {
+      background: var(--card-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .load-top {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--cyan);
+      cursor: pointer;
+    }
+
+    .tasks-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .tasks-table th,
+    .tasks-table td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: right;
+    }
+
+    .tasks-table th {
+      background: var(--card-2);
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    .tasks-table td {
+      background: rgba(9, 14, 26, 0.35);
+    }
+
+    .pill-miss {
+      color: #fca5a5;
+      font-weight: 700;
+    }
+
+    .pill-ok {
+      color: #86efac;
+      font-weight: 700;
+    }
+
+    .pill-warn {
+      color: #fcd34d;
+      font-weight: 700;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
     }
   </style>
 </head>
 <body>
-
-  <header class="hero">
-    <div class="wrap">
-      <div class="uni-box">
-        <span class="uni-ministry">Ministry of Higher Education and Scientific Research</span>
-        <span class="uni-college">Al-Hadhara University College</span>
-        <span class="uni-dept">Department of Computer Engineering Techniques</span>
-      </div>
-
-      <div class="hero-top">
-        <div class="hero-badge" aria-hidden="true">
-          <svg class="icon" viewBox="0 0 24 24">
-            <path d="M17 2l4 4-4 4"/>
-            <path d="M3 11v-1a4 4 0 0 1 4-4h14"/>
-            <path d="M7 22l-4-4 4-4"/>
-            <path d="M21 13v1a4 4 0 0 1-4 4H3"/>
-          </svg>
-        </div>
-        <div>
-          <h1>Dynamic Loops</h1>
-          <p>How loops adapt their steps, conditions, and output at runtime</p>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main class="wrap">
-
-    <!-- 1. Clear Explanation -->
-    <section class="card">
-      <div class="card-head">
-        <svg class="icon" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M12 16v-4"/>
-          <path d="M12 8h.01"/>
-        </svg>
-        <h2>1. What Does "Dynamic Loop" Mean?</h2>
-      </div>
-
-      <p class="lead">
-        A <strong>dynamic loop</strong> does not use fixed numbers written in advance. Instead, it decides
-        how many times to run, how big each jump (step) is, or which items to keep while the program is
-        actually running.
+  <div class="wrap">
+    <header>
+      <span class="pill">Real-Time Systems — محاكاة الحلقات الديناميكية وجدولة الزمن الحقيقي</span>
+      <h1>الحلقات الديناميكية وأنظمة الزمن الحقيقي (Dynamic Loops & Real-Time Systems)</h1>
+      <p class="sub">
+        جانب تطبيقي لمادة <strong>أنظمة الزمن الحقيقي (Real-Time Systems)</strong> يجمع بين الحلقة المتغيرة برمجياً (تغيير البداية والنهاية وعرض بطاقات Pass) وبين المحاكاة الزمنية الحية، راسم الموجة المتحرك، المواعيد النهائية (Deadlines)، وجدولة المهام.
       </p>
+    </header>
 
-      <div class="simple-grid">
-        <div class="mini-box">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M12 20h9"/>
-              <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
-            </svg>
-            Static Loop
-          </h3>
-          <p>Fixed limit (e.g. always 1 to 10). Same behavior every single time you run it.</p>
-        </div>
-
-        <div class="mini-box">
-          <h3>
-            <svg class="icon" viewBox="0 0 24 24">
-              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-            </svg>
-            Dynamic Loop
-          </h3>
-          <p>Reads live values (start, end, step, filter, or list length) and builds the result on the fly.</p>
-        </div>
-      </div>
-
-      <pre><code>for (let i = start; i &lt;= endLimit; i += step) {
-  if (matchesCondition(i)) createBox(i);
-}</code></pre>
+    <!-- القسم الأول -->
+    <section id="sec-1">
+      <h2>1. مفهوم الحلقة الديناميكية (Dynamic Loop Concept)</h2>
+      <p class="desc">
+        بدل الاعتماد على حدود ثابتة جامدة، يمكن ضبط نطاق التكرار برمجياً أو تكييف معدل الحلقة وترددها زمنياً في أنظمة الزمن الحقيقي استجابةً للمدخلات وحالة النظام أثناء التشغيل.
+      </p>
     </section>
 
-    <!-- 2. Interactive Simulator -->
-    <section class="card">
-      <div class="card-head">
-        <svg class="icon" viewBox="0 0 24 24">
-          <polygon points="5 3 19 12 5 21 5 3"/>
-        </svg>
-        <h2>2. Interactive Loop Simulator</h2>
-      </div>
-
-      <p class="lead">
-        Change any input below and click <strong>Run Loop</strong>. Watch how the loop changes its steps
-        and output automatically.
+    <!-- القسم الثاني: الحلقة المتغيرة برمجياً -->
+    <section id="sec-2">
+      <h2>2. الحلقة المتغيرة برمجياً (Dynamic Start / End & Pass Cards)</h2>
+      <p class="desc">
+        غيّر قيمة البداية (Start) والنهاية (End) لتوليد بطاقات التكرار (Pass) مباشرة، مع إمكانية إعادة الضبط إلى النطاق الافتراضي (1 إلى 10).
       </p>
 
-      <div class="controls">
+      <div class="controls-row">
         <div class="field">
-          <label for="startVal">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            Start Value
-          </label>
-          <input type="number" id="startVal" value="1" />
+          <label for="startInput">البداية (Start)</label>
+          <input id="startInput" type="number" value="1" />
         </div>
-
         <div class="field">
-          <label for="endVal">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
-            End Limit
-          </label>
-          <input type="number" id="endVal" value="10" />
+          <label for="endInput">النهاية (End)</label>
+          <input id="endInput" type="number" value="10" />
         </div>
-
-        <div class="field">
-          <label for="stepVal">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-            Step Size
-          </label>
-          <input type="number" id="stepVal" value="1" min="1" />
-        </div>
-
-        <div class="field">
-          <label for="filterMode">
-            <svg class="icon" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-            Filter Condition
-          </label>
-          <select id="filterMode">
-            <option value="all">Show All</option>
-            <option value="even">Even Numbers Only</option>
-            <option value="odd">Odd Numbers Only</option>
-          </select>
-        </div>
+        <button class="primary" onclick="renderPassLoop()">توليد البطاقات</button>
+        <button onclick="resetPassLoop()">افتراضي (1 → 10)</button>
       </div>
 
-      <div class="btn-row">
-        <button id="runBtn" type="button">
-          <svg class="icon" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-          Run Loop
-        </button>
-        <button id="clearBtn" type="button" class="ghost">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>
-          Clear Output
-        </button>
-      </div>
-
-      <div class="status-bar" id="statusBar">
-        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-        <span id="statusText">Ready</span>
-      </div>
-
-      <div class="nodes-grid" id="nodesGrid"></div>
+      <div id="passSummary" style="color:var(--muted); font-size:0.88rem;"></div>
+      <div class="passes-grid" id="passesGrid"></div>
     </section>
 
-    <!-- 3. Dynamic Array List -->
-    <section class="card">
-      <div class="card-head">
-        <svg class="icon" viewBox="0 0 24 24">
-          <line x1="8" y1="6" x2="21" y2="6"/>
-          <line x1="8" y1="12" x2="21" y2="12"/>
-          <line x1="8" y1="18" x2="21" y2="18"/>
-          <line x1="3" y1="6" x2="3.01" y2="6"/>
-          <line x1="3" y1="12" x2="3.01" y2="12"/>
-          <line x1="3" y1="18" x2="3.01" y2="18"/>
-        </svg>
-        <h2>3. Dynamic List (Loop Over Changing Data)</h2>
-      </div>
+    <!-- القسم الثالث -->
+    <section id="sec-3">
+      <h2>3. التكيف أثناء التنفيذ (Runtime Adaptation)</h2>
+      <p class="desc">
+        في أنظمة الزمن الحقيقي، تتغير الموجة الدورية للحلقة من حيث التردد (Frequency) والفترة (Period) أثناء التشغيل استجابةً للحمل، مع مراقبة صارمة للموعد النهائي (Deadline).
+      </p>
+    </section>
 
-      <p class="lead">
-        Here the loop runs <strong>list.length</strong> times. Add or delete an item and the list
-        updates itself immediately.
+    <!-- القسم الرابع: محاكي الحلقة الزمنية الحية وشكل الموجة المتحرك -->
+    <section id="sec-4">
+      <h2>4. محاكي الحلقة الزمنية الحية وشكل الموجة المتحرك</h2>
+      <p class="desc">
+        حرّك شريط الحمل/الحرارة وراقب كيف تتغير الموجة المتحركة فوراً حسب التردد المدخل/المحسوب، وكيف تتفاعل الحلقة الثابتة مع الحلقة المتكيفة والمواعيد النهائية.
       </p>
 
-      <div class="add-box">
-        <input type="text" id="newTaskInput" placeholder="Type a new item and press Add..." />
-        <button id="addTaskBtn" type="button">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-          Add
-        </button>
+      <div class="controls-row">
+        <button id="toggleTimerBtn" class="primary" onclick="toggleRealTimeClock()">إيقاف المؤقت الحي</button>
+        <button onclick="resetCounters()">تصفير العدادات والمواعيد</button>
+        <div class="field" style="margin-right:8px;">
+          <label for="customFreqInput">تردد مخصص للموجة (Hz - اختياري)</label>
+          <input
+            id="customFreqInput"
+            type="number"
+            min="1"
+            max="250"
+            step="1"
+            placeholder="تلقائي"
+            oninput="syncParams()"
+          />
+        </div>
+        <span id="clockElapsed" style="margin-right:auto; color:var(--muted); font-size:0.9rem;">
+          زمن التشغيل الفعلي: 0.0s
+        </span>
       </div>
 
-      <ul class="task-list" id="taskList"></ul>
+      <div class="load-box">
+        <div class="load-top">
+          <span>حمل النظام / حرارة المستشعر (Load / Sensor Temp):</span>
+          <span id="loadLabel">45%</span>
+        </div>
+        <input id="loadRange" type="range" min="0" max="100" value="45" oninput="syncParams()" />
+      </div>
+
+      <!-- راسم الموجة الحي المتحرك -->
+      <div class="scope-box">
+        <div class="scope-top">
+          <strong id="waveReadout">تردد الموجة المتكيفة: 63.3 Hz | الفترة: 15.80 ms</strong>
+          <div class="legend">
+            <span><i class="dot-key" style="background:#94a3b8;"></i>موجة ثابتة (50 Hz)</span>
+            <span><i class="dot-key" style="background:#22d3ee;"></i>موجة متكيفة (آمنة)</span>
+            <span><i class="dot-key" style="background:#f59e0b;"></i>قرب Deadline</span>
+            <span><i class="dot-key" style="background:#ef4444;"></i>تجاوز Deadline</span>
+          </div>
+        </div>
+        <canvas id="waveCanvas" width="1020" height="190"></canvas>
+      </div>
+
+      <div class="rt-compare-grid">
+        <div class="loop-card">
+          <div class="loop-header">
+            <h3>حلقة ثابتة التردد (Fixed-Rate Static Loop)</h3>
+            <span class="tag tag-fixed">Static Rate</span>
+          </div>
+          <div class="stats-mini">
+            <div class="stat-cell"><span>Frequency</span><strong id="fixedFreq">50.0 Hz</strong></div>
+            <div class="stat-cell"><span>Period (T)</span><strong id="fixedPeriod">20.00 ms</strong></div>
+            <div class="stat-cell"><span>Execution Time (C)</span><strong id="fixedExec">13.90 ms</strong></div>
+            <div class="stat-cell"><span>Deadline (D)</span><strong id="fixedDeadline">16.00 ms</strong></div>
+          </div>
+          <div class="pulse-track" id="fixedPulseTrack"></div>
+          <div id="fixedStatus" class="ok-badge">الحالة: ضمن الموعد النهائي</div>
+        </div>
+
+        <div class="loop-card">
+          <div class="loop-header">
+            <h3>حلقة متكيفة زمنياً (Adaptive Real-Time Loop)</h3>
+            <span class="tag tag-adaptive">Dynamic Real-Time</span>
+          </div>
+          <div class="stats-mini">
+            <div class="stat-cell"><span>Frequency</span><strong id="adaptFreq">63.3 Hz</strong></div>
+            <div class="stat-cell"><span>Period (T)</span><strong id="adaptPeriod">15.80 ms</strong></div>
+            <div class="stat-cell"><span>Execution Time (C)</span><strong id="adaptExec">6.02 ms</strong></div>
+            <div class="stat-cell"><span>Deadline (D)</span><strong id="adaptDeadline">13.43 ms</strong></div>
+          </div>
+          <div class="pulse-track" id="adaptPulseTrack"></div>
+          <div id="adaptStatus" class="ok-badge">الحالة: تتكيف ديناميكياً مع الحمل</div>
+        </div>
+      </div>
+
+      <h3>ربط المحاكي بجدولة المهام والمواعيد النهائية (Task Scheduling & Deadline Miss)</h3>
+      <p class="desc">
+        توضح الجدولة التالية كيف تتأثر المهام حسب أولويتها ووقت تنفيذها وموعدها النهائي عندما يتغير الحمل ومعدل الحلقة في الزمن الحقيقي:
+      </p>
+
+      <table class="tasks-table">
+        <thead>
+          <tr>
+            <th>المهمة (Task)</th>
+            <th>الأولوية</th>
+            <th>الفترة / الموعد النهائي</th>
+            <th>وقت التنفيذ الحالي</th>
+            <th>حالة الجدولة والـ Deadline</th>
+          </tr>
+        </thead>
+        <tbody id="scheduleTableBody"></tbody>
+      </table>
     </section>
 
-  </main>
-
-  <footer class="footer">
-    <p>Department of Computer Engineering Techniques — Web Programming</p>
-    <p class="creators">Created by: Ibrahim Khalid, Nadhir Salim, Khalid Bayan</p>
-  </footer>
+    <footer>
+      مادة أنظمة الزمن الحقيقي (Real-Time Systems) — تطبيق عملي لمحاكاة الحلقات الديناميكية والموجات الزمنية وجدولة المهام.
+    </footer>
+  </div>
 
   <script>
-    const startVal = document.getElementById("startVal");
-    const endVal = document.getElementById("endVal");
-    const stepVal = document.getElementById("stepVal");
-    const filterMode = document.getElementById("filterMode");
-    const runBtn = document.getElementById("runBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const nodesGrid = document.getElementById("nodesGrid");
-    const statusText = document.getElementById("statusText");
+    // القسم الثاني: توليد بطاقات Pass حسب البداية والنهاية
+    function renderPassLoop() {
+      const startVal = Number(document.getElementById("startInput").value);
+      const endVal = Number(document.getElementById("endInput").value);
+      const grid = document.getElementById("passesGrid");
+      const summary = document.getElementById("passSummary");
 
-    function runLoop() {
-      const start = parseInt(startVal.value, 10);
-      const end = parseInt(endVal.value, 10);
-      const step = parseInt(stepVal.value, 10);
-      const mode = filterMode.value;
-
-      nodesGrid.innerHTML = "";
-
-      if (Number.isNaN(start) || Number.isNaN(end) || Number.isNaN(step) || step <= 0) {
-        statusText.textContent = "Enter valid numbers and make sure Step is greater than 0.";
+      if (Number.isNaN(startVal) || Number.isNaN(endVal)) {
+        summary.textContent = "يرجى إدخال أرقام صحيحة للبداية والنهاية.";
+        grid.innerHTML = "";
         return;
       }
 
-      if (end - start > 400) {
-        statusText.textContent = "Range is too big. Keep the difference at or below 400.";
-        return;
+      const step = startVal <= endVal ? 1 : -1;
+      const totalPasses = Math.abs(endVal - startVal) + 1;
+
+      if (totalPasses > 100) {
+        summary.textContent = "تم تحديد العرض بأول 100 بطاقة حفاظاً على سلاسة الصفحة.";
+      } else {
+        summary.textContent = `عدد التكرارات (Passes): ${totalPasses} (من ${startVal} إلى ${endVal})`;
       }
 
-      let loopsCount = 0;
-      let shownCount = 0;
-
-      for (let i = start; i <= end; i += step) {
-        loopsCount++;
-
-        if (mode === "even" && i % 2 !== 0) continue;
-        if (mode === "odd" && i % 2 === 0) continue;
-
-        shownCount++;
-        const card = document.createElement("div");
-        card.className = "node";
-        card.innerHTML = `<span>Pass #${loopsCount}</span><strong>${i}</strong>`;
-        nodesGrid.appendChild(card);
-      }
-
-      statusText.textContent = `Loop ran ${loopsCount} time(s) • Displayed ${shownCount} item(s)`;
-    }
-
-    runBtn.addEventListener("click", runLoop);
-
-    clearBtn.addEventListener("click", () => {
-      nodesGrid.innerHTML = "";
-      statusText.textContent = "Output cleared.";
-    });
-
-    const newTaskInput = document.getElementById("newTaskInput");
-    const addTaskBtn = document.getElementById("addTaskBtn");
-    const taskList = document.getElementById("taskList");
-
-    const tasks = [
-      "Read start and end values",
-      "Check loop condition each pass",
-      "Render items dynamically"
-    ];
-
-    function renderTasks() {
-      taskList.innerHTML = "";
-
-      for (let i = 0; i < tasks.length; i++) {
-        const li = document.createElement("li");
-        li.className = "task-item";
-        li.innerHTML = `
-          <div class="task-left">
-            <span class="idx-pill">#${i + 1}</span>
-            <span>${tasks[i]}</span>
+      const cards = [];
+      let count = 0;
+      for (let i = startVal; step > 0 ? i <= endVal : i >= endVal; i += step) {
+        count++;
+        if (count > 100) break;
+        cards.push(`
+          <div class="pass-card">
+            <strong>Pass #${count}</strong>
+            <div>قيمة العداد: ${i}</div>
           </div>
-          <button type="button" class="danger" onclick="deleteTask(${i})">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            Remove
-          </button>
-        `;
-        taskList.appendChild(li);
+        `);
+      }
+      grid.innerHTML = cards.join("");
+    }
+
+    function resetPassLoop() {
+      document.getElementById("startInput").value = 1;
+      document.getElementById("endInput").value = 10;
+      renderPassLoop();
+    }
+
+    // القسم الرابع: محاكي الزمن الحقيقي والموجة المتحركة
+    let running = true;
+    let elapsedSec = 0;
+    let fixedMissCount = 0;
+    let adaptMissCount = 0;
+    let lastFixedTick = 0;
+    let lastAdaptTick = 0;
+    let phaseFixed = 0;
+    let phaseAdapt = 0;
+
+    function getSystemMetrics() {
+      const load = Number(document.getElementById("loadRange").value);
+      const customFreqRaw = Number(document.getElementById("customFreqInput").value);
+      const hasCustomFreq = document.getElementById("customFreqInput").value.trim() !== "" && customFreqRaw > 0;
+
+      document.getElementById("loadLabel").textContent = `${load}%`;
+
+      const fixedFreq = 50.0;
+      const fixedPeriod = 1000 / fixedFreq;
+      const fixedExec = 4.0 + load * 0.22;
+      const fixedDeadline = 16.0;
+
+      const adaptFreq = hasCustomFreq ? Math.min(250, customFreqRaw) : 25.0 + load * 0.85;
+      const adaptPeriod = 1000 / adaptFreq;
+      const adaptExec = 2.2 + load * 0.085;
+      const adaptDeadline = Math.max(4.0, adaptPeriod * 0.85);
+
+      return {
+        load,
+        hasCustomFreq,
+        fixedFreq,
+        fixedPeriod,
+        fixedExec,
+        fixedDeadline,
+        adaptFreq,
+        adaptPeriod,
+        adaptExec,
+        adaptDeadline
+      };
+    }
+
+    function syncParams() {
+      const m = getSystemMetrics();
+
+      document.getElementById("fixedFreq").textContent = `${m.fixedFreq.toFixed(1)} Hz`;
+      document.getElementById("fixedPeriod").textContent = `${m.fixedPeriod.toFixed(2)} ms`;
+      document.getElementById("fixedExec").textContent = `${m.fixedExec.toFixed(2)} ms`;
+      document.getElementById("fixedDeadline").textContent = `${m.fixedDeadline.toFixed(2)} ms`;
+
+      document.getElementById("adaptFreq").textContent = `${m.adaptFreq.toFixed(1)} Hz`;
+      document.getElementById("adaptPeriod").textContent = `${m.adaptPeriod.toFixed(2)} ms`;
+      document.getElementById("adaptExec").textContent = `${m.adaptExec.toFixed(2)} ms`;
+      document.getElementById("adaptDeadline").textContent = `${m.adaptDeadline.toFixed(2)} ms`;
+
+      const modeText = m.hasCustomFreq ? " (تردد مدخل يدوياً)" : " (متكيف مع الحمل)";
+      document.getElementById("waveReadout").textContent =
+        `تردد الموجة المتكيفة: ${m.adaptFreq.toFixed(1)} Hz${modeText} | الفترة: ${m.adaptPeriod.toFixed(2)} ms`;
+
+      renderTaskScheduling(m);
+    }
+
+    function pushBeat(trackId, state) {
+      const track = document.getElementById(trackId);
+      const dot = document.createElement("div");
+      dot.className = `beat ${state}`;
+      track.appendChild(dot);
+      while (track.children.length > 26) {
+        track.removeChild(track.firstChild);
       }
     }
 
-    function deleteTask(index) {
-      tasks.splice(index, 1);
-      renderTasks();
+    function updateLoopStatuses(m) {
+      const fixedEl = document.getElementById("fixedStatus");
+      if (m.fixedExec > m.fixedDeadline) {
+        fixedMissCount++;
+        fixedEl.className = "miss-badge";
+        fixedEl.textContent = `Deadline Miss! تجاوز الموعد (${m.fixedExec.toFixed(1)}ms > ${m.fixedDeadline.toFixed(1)}ms) — التجاوزات: ${fixedMissCount}`;
+      } else if (m.fixedExec >= m.fixedDeadline * 0.8) {
+        fixedEl.className = "warn-badge";
+        fixedEl.textContent = `قريب من Deadline (${m.fixedExec.toFixed(1)}ms / ${m.fixedDeadline.toFixed(1)}ms) — التجاوزات: ${fixedMissCount}`;
+      } else {
+        fixedEl.className = "ok-badge";
+        fixedEl.textContent = `ضمن الموعد النهائي (${m.fixedExec.toFixed(1)}ms / ${m.fixedDeadline.toFixed(1)}ms) — التجاوزات: ${fixedMissCount}`;
+      }
+
+      const adaptEl = document.getElementById("adaptStatus");
+      if (m.adaptExec > m.adaptDeadline) {
+        adaptMissCount++;
+        adaptEl.className = "miss-badge";
+        adaptEl.textContent = `تحذير Deadline Miss تحت حمل مرتفع جداً! (${m.adaptExec.toFixed(1)}ms > ${m.adaptDeadline.toFixed(1)}ms) — التجاوزات: ${adaptMissCount}`;
+      } else if (m.adaptExec >= m.adaptDeadline * 0.8) {
+        adaptEl.className = "warn-badge";
+        adaptEl.textContent = `تكيف نشط — اقتراب من Deadline (${m.adaptExec.toFixed(1)}ms / ${m.adaptDeadline.toFixed(1)}ms)`;
+      } else {
+        adaptEl.className = "ok-badge";
+        adaptEl.textContent = `تكيف ناجح ضمن Deadline (${m.adaptExec.toFixed(1)}ms / ${m.adaptDeadline.toFixed(1)}ms)`;
+      }
     }
 
-    addTaskBtn.addEventListener("click", () => {
-      const text = newTaskInput.value.trim();
-      if (!text) return;
-      tasks.push(text);
-      newTaskInput.value = "";
-      renderTasks();
-    });
+    function renderTaskScheduling(m) {
+      const tbody = document.getElementById("scheduleTableBody");
 
-    newTaskInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") addTaskBtn.click();
-    });
+      const sensorExec = (1.5 + m.load * 0.05).toFixed(2);
+      const sensorDeadline = m.adaptDeadline.toFixed(2);
+      const sensorMiss = Number(sensorExec) > Number(sensorDeadline);
 
-    runLoop();
-    renderTasks();
+      const syncExec = (2.5 + m.load * 0.08).toFixed(2);
+      const syncDeadline = (m.adaptPeriod * 1.5).toFixed(2);
+      const syncMiss = Number(syncExec) > Number(syncDeadline);
+
+      const uiExec = (3.0 + m.load * 0.11).toFixed(2);
+      const uiDeadline = (m.adaptPeriod * 2.0).toFixed(2);
+      const uiDelayed = m.load >= 75;
+
+      const rows = [
+        {
+          name: "مهمة مستشعر حرجة (Critical Sensor)",
+          prio: "عالية (High)",
+          timing: `T: ${m.adaptPeriod.toFixed(1)}ms | D: ${sensorDeadline}ms`,
+          exec: `${sensorExec} ms`,
+          statusClass: sensorMiss ? "pill-miss" : "pill-ok",
+          statusText: sensorMiss ? "Deadline Miss (تأخر حرج)" : "On Time (ضمن الموعد)"
+        },
+        {
+          name: "مهمة تحديث بيانات (Data Sync)",
+          prio: "متوسطة (Medium)",
+          timing: `T: ${(m.adaptPeriod * 1.5).toFixed(1)}ms | D: ${syncDeadline}ms`,
+          exec: `${syncExec} ms`,
+          statusClass: syncMiss ? "pill-miss" : "pill-ok",
+          statusText: syncMiss ? "Deadline Miss" : "Scheduled (مجدولة)"
+        },
+        {
+          name: "مهمة عرض واجهة (Display Task)",
+          prio: "منخفضة (Low)",
+          timing: `T: ${(m.adaptPeriod * 2).toFixed(1)}ms | D: ${uiDeadline}ms`,
+          exec: `${uiExec} ms`,
+          statusClass: uiDelayed ? "pill-warn" : "pill-ok",
+          statusText: uiDelayed ? "Preempted / Deferred لصالح المهام الحرجة" : "Normal"
+        }
+      ];
+
+      tbody.innerHTML = rows
+        .map(
+          (r) => `
+          <tr>
+            <td>${r.name}</td>
+            <td>${r.prio}</td>
+            <td style="direction:ltr; text-align:right;">${r.timing}</td>
+            <td style="direction:ltr; text-align:right;">${r.exec}</td>
+            <td class="${r.statusClass}">${r.statusText}</td>
+          </tr>
+        `
+        )
+        .join("");
+    }
+
+    // رسم الموجة الحية المتحركة على Canvas
+    const canvas = document.getElementById("waveCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function drawOscilloscope(m, dtSec) {
+      const w = canvas.width;
+      const h = canvas.height;
+      const midY = h / 2;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // شبكة خلفية خفيفة
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.1)";
+      ctx.lineWidth = 1;
+      for (let x = 0; x <= w; x += 60) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y <= h; y += 38) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      // خط الصفر الأفقي
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.25)";
+      ctx.beginPath();
+      ctx.moveTo(0, midY);
+      ctx.lineTo(w, midY);
+      ctx.stroke();
+
+      if (running) {
+        // حركة الطور مرتبطة بالتردد والزمن الحقيقي
+        phaseFixed += dtSec * m.fixedFreq * 0.22;
+        phaseAdapt += dtSec * m.adaptFreq * 0.22;
+      }
+
+      // 1) الموجة الثابتة (Fixed 50Hz)
+      const fixedSpatialFreq = (m.fixedFreq / 50) * 0.045;
+      ctx.strokeStyle = "rgba(148, 163, 184, 0.55)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      for (let x = 0; x < w; x += 2) {
+        const y = midY + Math.sin(x * fixedSpatialFreq - phaseFixed) * 34;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // 2) الموجة المتكيفة حسب التردد والـ Deadline
+      let waveColor = "#22d3ee";
+      let jitter = 0;
+      if (m.adaptExec > m.adaptDeadline) {
+        waveColor = "#ef4444";
+        jitter = 7;
+      } else if (m.adaptExec >= m.adaptDeadline * 0.8) {
+        waveColor = "#f59e0b";
+        jitter = 3;
+      }
+
+      const adaptSpatialFreq = Math.min(0.24, Math.max(0.012, (m.adaptFreq / 50) * 0.045));
+      const amp = 46 + (m.load / 100) * 18;
+
+      ctx.strokeStyle = waveColor;
+      ctx.lineWidth = 2.6;
+      ctx.beginPath();
+      for (let x = 0; x < w; x += 2) {
+        const noise = jitter > 0 ? (Math.sin(x * 0.7 + phaseAdapt * 3) * jitter) : 0;
+        const y = midY + Math.sin(x * adaptSpatialFreq - phaseAdapt) * amp + noise;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    let prevFrameTime = performance.now();
+    function animationLoop(now) {
+      const dtSec = Math.min(0.1, (now - prevFrameTime) / 1000);
+      prevFrameTime = now;
+
+      const m = getSystemMetrics();
+      drawOscilloscope(m, dtSec);
+
+      if (running) {
+        elapsedSec += dtSec;
+        document.getElementById("clockElapsed").textContent = `زمن التشغيل الفعلي: ${elapsedSec.toFixed(1)}s`;
+
+        const fixedVisualInterval = Math.max(140, m.fixedPeriod * 12);
+        if (now - lastFixedTick >= fixedVisualInterval) {
+          lastFixedTick = now;
+          const state = m.fixedExec > m.fixedDeadline ? "miss" : m.fixedExec >= m.fixedDeadline * 0.8 ? "late" : "";
+          pushBeat("fixedPulseTrack", state);
+          updateLoopStatuses(m);
+        }
+
+        const adaptVisualInterval = Math.max(90, m.adaptPeriod * 14);
+        if (now - lastAdaptTick >= adaptVisualInterval) {
+          lastAdaptTick = now;
+          const state = m.adaptExec > m.adaptDeadline ? "miss" : m.adaptExec >= m.adaptDeadline * 0.8 ? "late" : "";
+          pushBeat("adaptPulseTrack", state);
+          updateLoopStatuses(m);
+        }
+      }
+
+      requestAnimationFrame(animationLoop);
+    }
+
+    function toggleRealTimeClock() {
+      running = !running;
+      const btn = document.getElementById("toggleTimerBtn");
+      btn.textContent = running ? "إيقاف المؤقت الحي" : "تشغيل المؤقت الحي";
+    }
+
+    function resetCounters() {
+      elapsedSec = 0;
+      fixedMissCount = 0;
+      adaptMissCount = 0;
+      document.getElementById("customFreqInput").value = "";
+      document.getElementById("fixedPulseTrack").innerHTML = "";
+      document.getElementById("adaptPulseTrack").innerHTML = "";
+      document.getElementById("clockElapsed").textContent = "زمن التشغيل الفعلي: 0.0s";
+      syncParams();
+      updateLoopStatuses(getSystemMetrics());
+    }
+
+    renderPassLoop();
+    syncParams();
+    updateLoopStatuses(getSystemMetrics());
+    requestAnimationFrame(animationLoop);
   </script>
 </body>
 </html>
