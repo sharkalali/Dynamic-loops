@@ -127,7 +127,7 @@
     }
 
     input[type="number"] {
-      width: 115px;
+      width: 125px;
       background: var(--card-2);
       color: var(--text);
       border: 1px solid var(--line);
@@ -365,6 +365,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 0.9rem;
+      margin-bottom: 16px;
     }
 
     .tasks-table th,
@@ -397,6 +398,65 @@
     .pill-warn {
       color: #fcd34d;
       font-weight: 700;
+    }
+
+    /* قواعد النجاح والفشل والسيناريو العملي */
+    .info-split {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .info-box {
+      background: var(--card-2);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 15px;
+    }
+
+    .info-box ul {
+      padding-right: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .info-box li {
+      margin-bottom: 6px;
+    }
+
+    .scenario-box {
+      background: rgba(9, 14, 26, 0.55);
+      border: 1px solid rgba(34, 211, 238, 0.25);
+      border-radius: 14px;
+      padding: 16px;
+      margin-top: 12px;
+    }
+
+    .scenario-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .step-card {
+      background: var(--card-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.88rem;
+    }
+
+    .step-card strong {
+      display: block;
+      color: var(--cyan);
+      margin-bottom: 4px;
+    }
+
+    .step-card p {
+      color: var(--muted);
+      font-size: 0.85rem;
     }
 
     footer {
@@ -572,6 +632,65 @@
         </thead>
         <tbody id="scheduleTableBody"></tbody>
       </table>
+
+      <!-- المعادلات وقواعد النجاح والفشل -->
+      <div class="info-split">
+        <div class="info-box">
+          <h3>معادلات التردد والفترة وزمن التنفيذ</h3>
+          <ul>
+            <li><strong>الفترة الزمنية ($T$):</strong> $T = \frac{1000}{f}\text{ (ms)}$ حيث $f$ التردد بالهرتز.</li>
+            <li><strong>التردد المتكيف ($f_{\text{adapt}}$):</strong> يزداد مع ارتفاع الحمل/الحرارة لتسريع المراقبة، أو يُحدد يدوياً من حقل التردد المخصص.</li>
+            <li><strong>زمن التنفيذ ($C$):</strong> يمثل الوقت الفعلي لمعالجة دورة المهمة ويزداد كلما ارتفع الحمل.</li>
+            <li><strong>الموعد النهائي ($D$):</strong> الحد الأقصى المسموح لإنهاء المهمة قبل الدورة التالية.</li>
+          </ul>
+        </div>
+
+        <div class="info-box">
+          <h3>متى تنجح المهمة ومتى تفشل في تحقيق Deadline؟</h3>
+          <ul>
+            <li><strong>نجاح المهمة (`On Time`):</strong> عندما يكون $C \le 0.8 \times D$ — تُنفّذ المهمة وتُسلّم نتيجتها قبل انتهاء الموعد النهائي بأمان.</li>
+            <li><strong>اقتراب خطر (`Near Deadline`):</strong> عندما يكون $0.8 \times D < C \le D$ — الهامش الزمني ضيق وأي زيادة إضافية قد تسبب تأخراً.</li>
+            <li><strong>فشل الموعد النهائي (`Deadline Miss`):</strong> عندما يتجاوز وقت التنفيذ الموعد النهائي ($C > D$) أو تُؤجّل المهام الأقل أولوية تحت ضغط الحمل العالي.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- سيناريو عملي من البداية إلى النهاية -->
+      <div class="scenario-box">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:10px;">
+          <div>
+            <h3>سيناريو عملي من البداية إلى النهاية: نظام مراقبة حرارة وتحكم في الزمن الحقيقي</h3>
+            <p class="desc" style="margin-bottom:0;">
+              جرّب مراحل السيناريو عملياً لتشوف كيف يتصرف النظام من الاستقرار إلى الضغط العالي ثم التكيف:
+            </p>
+          </div>
+          <div class="controls-row" style="margin-bottom:0;">
+            <button onclick="applyScenarioStage(1)">1. بداية مستقرة (20%)</button>
+            <button onclick="applyScenarioStage(2)">2. ارتفاع مفاجئ (80%)</button>
+            <button onclick="applyScenarioStage(3)">3. حمل حرج (96%)</button>
+            <button onclick="applyScenarioStage(4)">4. استقرار وتكيف (35%)</button>
+          </div>
+        </div>
+
+        <div class="scenario-steps">
+          <div class="step-card">
+            <strong>المرحلة 1: البداية والاستقرار</strong>
+            <p>الحمل منخفض (20%)، التردد معتدل، ووقت التنفيذ أقل بكثير من الـ Deadline؛ جميع المهام تنجح بانتظام.</p>
+          </div>
+          <div class="step-card">
+            <strong>المرحلة 2: ارتفاع الحمل</strong>
+            <p>ترتفع حرارة المستشعر أو الحمل (80%)، فيرتفع التردد وتقل الفترة، وتبدأ المهام منخفضة الأولوية بالتأجيل لصالح المهام الحرجة.</p>
+          </div>
+          <div class="step-card">
+            <strong>المرحلة 3: ضغط حرج وDeadline Miss</strong>
+            <p>عند الحمل العالي جداً (96%)، يزداد زمن التنفيذ وقد يتجاوز الموعد النهائي فتظهر تحذيرات Deadline Miss وتغير لون الموجة.</p>
+          </div>
+          <div class="step-card">
+            <strong>المرحلة 4: العودة للتوازن</strong>
+            <p>بانخفاض الحمل وعودة التردد للوضع المناسب، تعود المهام للعمل ضمن الموعد النهائي وتستقر الموجة.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <footer>
@@ -643,16 +762,19 @@
 
     function getSystemMetrics() {
       const load = Number(document.getElementById("loadRange").value);
-      const customFreqRaw = Number(document.getElementById("customFreqInput").value);
-      const hasCustomFreq = document.getElementById("customFreqInput").value.trim() !== "" && customFreqRaw > 0;
+      const customFreqInputEl = document.getElementById("customFreqInput");
+      const customFreqRaw = Number(customFreqInputEl.value);
+      const hasCustomFreq = customFreqInputEl.value.trim() !== "" && !Number.isNaN(customFreqRaw) && customFreqRaw > 0;
 
       document.getElementById("loadLabel").textContent = `${load}%`;
 
+      // الحلقة الثابتة: تردد ثابت 50 Hz، فترة 20 ms، موعد نهائي ثابت 16 ms، وزمن تنفيذ يرتفع مع الحمل
       const fixedFreq = 50.0;
       const fixedPeriod = 1000 / fixedFreq;
       const fixedExec = 4.0 + load * 0.22;
       const fixedDeadline = 16.0;
 
+      // الحلقة المتكيفة: تتغير مع الحمل أو التردد المدخل يدوياً
       const adaptFreq = hasCustomFreq ? Math.min(250, customFreqRaw) : 25.0 + load * 0.85;
       const adaptPeriod = 1000 / adaptFreq;
       const adaptExec = 2.2 + load * 0.085;
@@ -733,42 +855,60 @@
     function renderTaskScheduling(m) {
       const tbody = document.getElementById("scheduleTableBody");
 
-      const sensorExec = (1.5 + m.load * 0.05).toFixed(2);
-      const sensorDeadline = m.adaptDeadline.toFixed(2);
-      const sensorMiss = Number(sensorExec) > Number(sensorDeadline);
+      // 1) مهمة مستشعر حرجة (أولوية عالية)
+      const sensorExec = (1.5 + m.load * 0.055);
+      const sensorDeadline = m.adaptDeadline;
+      const sensorMiss = sensorExec > sensorDeadline;
+      const sensorNear = !sensorMiss && sensorExec >= sensorDeadline * 0.8;
 
-      const syncExec = (2.5 + m.load * 0.08).toFixed(2);
-      const syncDeadline = (m.adaptPeriod * 1.5).toFixed(2);
-      const syncMiss = Number(syncExec) > Number(syncDeadline);
+      // 2) مهمة تحديث بيانات (أولوية متوسطة)
+      const syncExec = (2.5 + m.load * 0.085);
+      const syncDeadline = m.adaptPeriod * 1.5;
+      const syncMiss = syncExec > syncDeadline;
+      const syncNear = !syncMiss && syncExec >= syncDeadline * 0.8;
 
-      const uiExec = (3.0 + m.load * 0.11).toFixed(2);
-      const uiDeadline = (m.adaptPeriod * 2.0).toFixed(2);
-      const uiDelayed = m.load >= 75;
+      // 3) مهمة عرض واجهة (أولوية منخفضة)
+      const uiExec = (3.0 + m.load * 0.11);
+      const uiDeadline = m.adaptPeriod * 2.0;
+      const uiMiss = uiExec > uiDeadline;
+      const uiDeferred = !uiMiss && m.load >= 75;
 
       const rows = [
         {
           name: "مهمة مستشعر حرجة (Critical Sensor)",
-          prio: "عالية (High)",
-          timing: `T: ${m.adaptPeriod.toFixed(1)}ms | D: ${sensorDeadline}ms`,
-          exec: `${sensorExec} ms`,
-          statusClass: sensorMiss ? "pill-miss" : "pill-ok",
-          statusText: sensorMiss ? "Deadline Miss (تأخر حرج)" : "On Time (ضمن الموعد)"
+          prio: "1 — عالية (High)",
+          timing: `T: ${m.adaptPeriod.toFixed(1)}ms | D: ${sensorDeadline.toFixed(2)}ms`,
+          exec: `${sensorExec.toFixed(2)} ms`,
+          statusClass: sensorMiss ? "pill-miss" : sensorNear ? "pill-warn" : "pill-ok",
+          statusText: sensorMiss
+            ? `فشل Deadline (C > D): ${sensorExec.toFixed(1)}ms > ${sensorDeadline.toFixed(1)}ms`
+            : sensorNear
+            ? `نجاح حذر — قريب من Deadline`
+            : `ناجحة ضمن Deadline (C ≤ D)`
         },
         {
           name: "مهمة تحديث بيانات (Data Sync)",
-          prio: "متوسطة (Medium)",
-          timing: `T: ${(m.adaptPeriod * 1.5).toFixed(1)}ms | D: ${syncDeadline}ms`,
-          exec: `${syncExec} ms`,
-          statusClass: syncMiss ? "pill-miss" : "pill-ok",
-          statusText: syncMiss ? "Deadline Miss" : "Scheduled (مجدولة)"
+          prio: "2 — متوسطة (Medium)",
+          timing: `T: ${(m.adaptPeriod * 1.5).toFixed(1)}ms | D: ${syncDeadline.toFixed(2)}ms`,
+          exec: `${syncExec.toFixed(2)} ms`,
+          statusClass: syncMiss ? "pill-miss" : syncNear ? "pill-warn" : "pill-ok",
+          statusText: syncMiss
+            ? `فشل Deadline (C > D)`
+            : syncNear
+            ? `قريبة من الموعد النهائي`
+            : `ناجحة ومجدولة بانتظام`
         },
         {
           name: "مهمة عرض واجهة (Display Task)",
-          prio: "منخفضة (Low)",
-          timing: `T: ${(m.adaptPeriod * 2).toFixed(1)}ms | D: ${uiDeadline}ms`,
-          exec: `${uiExec} ms`,
-          statusClass: uiDelayed ? "pill-warn" : "pill-ok",
-          statusText: uiDelayed ? "Preempted / Deferred لصالح المهام الحرجة" : "Normal"
+          prio: "3 — منخفضة (Low)",
+          timing: `T: ${(m.adaptPeriod * 2).toFixed(1)}ms | D: ${uiDeadline.toFixed(2)}ms`,
+          exec: `${uiExec.toFixed(2)} ms`,
+          statusClass: uiMiss ? "pill-miss" : uiDeferred ? "pill-warn" : "pill-ok",
+          statusText: uiMiss
+            ? `فشل Deadline بسبب الحمل المرتفع`
+            : uiDeferred
+            ? `تأجيل مؤقت لصالح الأولويات الأعلى`
+            : `ناجحة ضمن الموعد النهائي`
         }
       ];
 
@@ -785,6 +925,20 @@
         `
         )
         .join("");
+    }
+
+    function applyScenarioStage(stage) {
+      const slider = document.getElementById("loadRange");
+      const customFreq = document.getElementById("customFreqInput");
+      customFreq.value = "";
+
+      if (stage === 1) slider.value = 20;
+      else if (stage === 2) slider.value = 80;
+      else if (stage === 3) slider.value = 96;
+      else if (stage === 4) slider.value = 35;
+
+      syncParams();
+      updateLoopStatuses(getSystemMetrics());
     }
 
     const canvas = document.getElementById("waveCanvas");
