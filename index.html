@@ -46,6 +46,25 @@
       margin-bottom: 22px;
     }
 
+    .top-institution {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .inst-banner {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      background: rgba(17, 25, 46, 0.75);
+      border: 1px solid var(--line);
+      padding: 6px 14px;
+      border-radius: 10px;
+    }
+
     .pill {
       display: inline-block;
       font-size: 0.8rem;
@@ -55,7 +74,6 @@
       border: 1px solid rgba(34, 211, 238, 0.35);
       padding: 4px 12px;
       border-radius: 999px;
-      margin-bottom: 10px;
     }
 
     h1 {
@@ -96,7 +114,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      align-items: center;
+      align-items: flex-end;
       margin-bottom: 16px;
     }
 
@@ -109,7 +127,7 @@
     }
 
     input[type="number"] {
-      width: 110px;
+      width: 115px;
       background: var(--card-2);
       color: var(--text);
       border: 1px solid var(--line);
@@ -140,10 +158,10 @@
       border: none;
     }
 
-    /* بطاقات Pass #1..#10 */
+    /* بطاقات Pass */
     .passes-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
       gap: 10px;
       margin-top: 12px;
     }
@@ -384,19 +402,31 @@
     footer {
       text-align: center;
       color: var(--muted);
-      font-size: 0.88rem;
-      padding-top: 12px;
+      font-size: 0.9rem;
+      padding-top: 16px;
       border-top: 1px solid var(--line);
+      line-height: 1.8;
+    }
+
+    footer .authors {
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 4px;
     }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <span class="pill">Real-Time Systems — محاكاة الحلقات الديناميكية وجدولة الزمن الحقيقي</span>
+      <div class="top-institution">
+        <div class="inst-banner">
+          وزارة التعليم العالي والبحث العلمي — كلية الحضارة الجامعة الأهلية — قسم هندسة تقنيات الحاسوب (المرحلة الثالثة)
+        </div>
+        <span class="pill">Real-Time Systems — أنظمة الزمن الحقيقي</span>
+      </div>
       <h1>الحلقات الديناميكية وأنظمة الزمن الحقيقي (Dynamic Loops & Real-Time Systems)</h1>
       <p class="sub">
-        جانب تطبيقي لمادة <strong>أنظمة الزمن الحقيقي (Real-Time Systems)</strong> يجمع بين الحلقة المتغيرة برمجياً (تغيير البداية والنهاية وعرض بطاقات Pass) وبين المحاكاة الزمنية الحية، راسم الموجة المتحرك، المواعيد النهائية (Deadlines)، وجدولة المهام.
+        تطبيق عملي لمادة <strong>أنظمة الزمن الحقيقي (Real-Time Systems)</strong> يجمع بين الحلقة المتغيرة برمجياً (تغيير البداية والنهاية ومقدار الزيادة Step وعرض بطاقات Pass) وبين المحاكاة الزمنية الحية، راسم الموجة المتحرك، المواعيد النهائية (Deadlines)، وجدولة المهام.
       </p>
     </header>
 
@@ -404,25 +434,29 @@
     <section id="sec-1">
       <h2>1. مفهوم الحلقة الديناميكية (Dynamic Loop Concept)</h2>
       <p class="desc">
-        بدل الاعتماد على حدود ثابتة جامدة، يمكن ضبط نطاق التكرار برمجياً أو تكييف معدل الحلقة وترددها زمنياً في أنظمة الزمن الحقيقي استجابةً للمدخلات وحالة النظام أثناء التشغيل.
+        بدل الاعتماد على حدود أو خطوات ثابتة جامدة، يمكن ضبط نطاق التكرار ومقدار الزيادة برمجياً أو تكييف معدل الحلقة وترددها زمنياً في أنظمة الزمن الحقيقي استجابةً للمدخلات وحالة النظام أثناء التشغيل.
       </p>
     </section>
 
     <!-- القسم الثاني: الحلقة المتغيرة برمجياً -->
     <section id="sec-2">
-      <h2>2. الحلقة المتغيرة برمجياً (Dynamic Start / End & Pass Cards)</h2>
+      <h2>2. الحلقة المتغيرة برمجياً (Dynamic Start / End / Step & Pass Cards)</h2>
       <p class="desc">
-        غيّر قيمة البداية (Start) والنهاية (End) لتوليد بطاقات التكرار (Pass) مباشرة، مع إمكانية إعادة الضبط إلى النطاق الافتراضي (1 إلى 10).
+        غيّر قيمة البداية (Start)، النهاية (End)، ومقدار الزيادة (Step مثل 1 أو 2 أو 3) لتوليد بطاقات التكرار (Pass) مباشرة، مع إمكانية إعادة الضبط إلى النطاق الافتراضي (1 إلى 10 بخطوة 1).
       </p>
 
       <div class="controls-row">
         <div class="field">
           <label for="startInput">البداية (Start)</label>
-          <input id="startInput" type="number" value="1" />
+          <input id="startInput" type="number" value="1" oninput="renderPassLoop()" />
         </div>
         <div class="field">
           <label for="endInput">النهاية (End)</label>
-          <input id="endInput" type="number" value="10" />
+          <input id="endInput" type="number" value="10" oninput="renderPassLoop()" />
+        </div>
+        <div class="field">
+          <label for="stepInput">مقدار الزيادة (Step)</label>
+          <input id="stepInput" type="number" min="1" value="1" oninput="renderPassLoop()" />
         </div>
         <button class="primary" onclick="renderPassLoop()">توليد البطاقات</button>
         <button onclick="resetPassLoop()">افتراضي (1 → 10)</button>
@@ -450,7 +484,7 @@
       <div class="controls-row">
         <button id="toggleTimerBtn" class="primary" onclick="toggleRealTimeClock()">إيقاف المؤقت الحي</button>
         <button onclick="resetCounters()">تصفير العدادات والمواعيد</button>
-        <div class="field" style="margin-right:8px;">
+        <div class="field">
           <label for="customFreqInput">تردد مخصص للموجة (Hz - اختياري)</label>
           <input
             id="customFreqInput"
@@ -541,15 +575,17 @@
     </section>
 
     <footer>
-      مادة أنظمة الزمن الحقيقي (Real-Time Systems) — تطبيق عملي لمحاكاة الحلقات الديناميكية والموجات الزمنية وجدولة المهام.
+      <div class="authors">إعداد الطلاب: إبراهيم خالد إبراهيم — ناظر سالم سعد — خالد بيان حمود</div>
+      <div>كلية الحضارة الجامعة الأهلية — قسم هندسة تقنيات الحاسوب | مادة أنظمة الزمن الحقيقي (Real-Time Systems)</div>
     </footer>
   </div>
 
   <script>
-    // القسم الثاني: توليد بطاقات Pass حسب البداية والنهاية
+    // القسم الثاني: توليد بطاقات Pass حسب البداية والنهاية ومقدار الزيادة (Step)
     function renderPassLoop() {
       const startVal = Number(document.getElementById("startInput").value);
       const endVal = Number(document.getElementById("endInput").value);
+      let stepVal = Number(document.getElementById("stepInput").value);
       const grid = document.getElementById("passesGrid");
       const summary = document.getElementById("passSummary");
 
@@ -559,23 +595,28 @@
         return;
       }
 
-      const step = startVal <= endVal ? 1 : -1;
-      const totalPasses = Math.abs(endVal - startVal) + 1;
+      if (Number.isNaN(stepVal) || stepVal < 1) {
+        stepVal = 1;
+      }
+
+      const goingUp = startVal <= endVal;
+      const signedStep = goingUp ? stepVal : -stepVal;
+      const totalPasses = Math.floor(Math.abs(endVal - startVal) / stepVal) + 1;
 
       if (totalPasses > 100) {
-        summary.textContent = "تم تحديد العرض بأول 100 بطاقة حفاظاً على سلاسة الصفحة.";
+        summary.textContent = `إجمالي التكرارات: ${totalPasses} (خطوة ${stepVal}) — يتم عرض أول 100 بطاقة حفاظاً على سلاسة الصفحة.`;
       } else {
-        summary.textContent = `عدد التكرارات (Passes): ${totalPasses} (من ${startVal} إلى ${endVal})`;
+        summary.textContent = `عدد التكرارات (Passes): ${totalPasses} (من ${startVal} إلى ${endVal} بزيادة/خطوة ${stepVal})`;
       }
 
       const cards = [];
-      let count = 0;
-      for (let i = startVal; step > 0 ? i <= endVal : i >= endVal; i += step) {
-        count++;
-        if (count > 100) break;
+      let passNum = 0;
+      for (let i = startVal; goingUp ? i <= endVal : i >= endVal; i += signedStep) {
+        passNum++;
+        if (passNum > 100) break;
         cards.push(`
           <div class="pass-card">
-            <strong>Pass #${count}</strong>
+            <strong>Pass #${passNum}</strong>
             <div>قيمة العداد: ${i}</div>
           </div>
         `);
@@ -586,6 +627,7 @@
     function resetPassLoop() {
       document.getElementById("startInput").value = 1;
       document.getElementById("endInput").value = 10;
+      document.getElementById("stepInput").value = 1;
       renderPassLoop();
     }
 
@@ -745,7 +787,6 @@
         .join("");
     }
 
-    // رسم الموجة الحية المتحركة على Canvas
     const canvas = document.getElementById("waveCanvas");
     const ctx = canvas.getContext("2d");
 
@@ -756,7 +797,6 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      // شبكة خلفية خفيفة
       ctx.strokeStyle = "rgba(148, 163, 184, 0.1)";
       ctx.lineWidth = 1;
       for (let x = 0; x <= w; x += 60) {
@@ -772,7 +812,6 @@
         ctx.stroke();
       }
 
-      // خط الصفر الأفقي
       ctx.strokeStyle = "rgba(148, 163, 184, 0.25)";
       ctx.beginPath();
       ctx.moveTo(0, midY);
@@ -780,12 +819,10 @@
       ctx.stroke();
 
       if (running) {
-        // حركة الطور مرتبطة بالتردد والزمن الحقيقي
         phaseFixed += dtSec * m.fixedFreq * 0.22;
         phaseAdapt += dtSec * m.adaptFreq * 0.22;
       }
 
-      // 1) الموجة الثابتة (Fixed 50Hz)
       const fixedSpatialFreq = (m.fixedFreq / 50) * 0.045;
       ctx.strokeStyle = "rgba(148, 163, 184, 0.55)";
       ctx.lineWidth = 2;
@@ -797,7 +834,6 @@
       }
       ctx.stroke();
 
-      // 2) الموجة المتكيفة حسب التردد والـ Deadline
       let waveColor = "#22d3ee";
       let jitter = 0;
       if (m.adaptExec > m.adaptDeadline) {
