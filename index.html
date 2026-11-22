@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic Loops — Interactive Guide</title>
+  <style>
+    :root {
+      --bg-main: #060d1f;
+      --bg-elevated: #0b1633;
+      --bg-card: rgba(13, 27, 62, 0.82);
+      --bg-input: #081229;
+      --border: rgba(125, 165, 255, 0.16);
+      --border-strong: rgba(125, 165, 255, 0.34);
+      --text-main: #f1f5ff;
+      --text-muted: #94a6cc;
+      --accent: #3b6ef6;
+      --accent-bright: #5b8cff;
+      --accent-soft: rgba(59, 110, 246, 0.16);
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at 15% 0%, rgba(37, 78, 194, 0.28), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(16, 42, 115, 0.35), transparent 50%),
+        var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Header */
+    .hero {
+      background: linear-gradient(180deg, rgba(14, 29, 68, 0.95) 0%, rgba(7, 16, 38, 0.95) 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 0 36px;
+      margin-bottom: 28px;
+    }
+
+    .uni-box {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding-bottom: 18px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .uni-ministry {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      letter-spacing: 0.4px;
+    }
+
+    .uni-college {
+      font-size: 15.5px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .uni-dept {
+      font-size: 13px;
+      color: #7da6ff;
+      font-weight: 500;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .hero-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--accent-soft);
+      border: 1px solid var(--border-strong);
+      color: #8cb2ff;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: #fff;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 14.5px;
+      margin-top: 4px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 22px;
+      backdrop-filter: blur(10px);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .card-head .icon {
+      color: #7da6ff;
+      width: 20px;
+      height: 20px;
+    }
+
+    .card-head h2 {
+      font-size: 19px;
+      font-weight: 650;
+      color: #fff;
+    }
+
+    .lead {
+      color: #d7e2fa;
+      font-size: 14.5px;
+      margin-bottom: 16px;
+    }
+
+    .simple-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .mini-box {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .mini-box h3 {
+      font-size: 14px;
+      color: #9bbaff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .mini-box p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+
+    pre {
+      background: #040917;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      color: #c8dcff;
+    }
+
+    /* Controls */
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field select,
+    .add-box input {
+      width: 100%;
+      background: var(--bg-input);
+      color: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .add-box input:focus {
+      border-color: var(--accent-bright);
+      box-shadow: 0 0 0 3px rgba(59, 110, 246, 0.2);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: linear-gradient(135deg, var(--accent) 0%, #2752cc 100%);
+      color: #fff;
+      border: 1px solid rgba(147, 185, 255, 0.25);
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s ease, filter 0.2s ease;
+    }
+
+    button:hover {
+      filter: brightness(1.12);
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.ghost {
+      background: rgba(148, 166, 204, 0.1);
+      border-color: var(--border);
+      color: #d6e1fa;
+    }
+
+    button.danger {
+      background: rgba(239, 68, 68, 0.14);
+      border-color: rgba(239, 68, 68, 0.35);
+      color: #fca5a5;
+      padding: 6px 11px;
+      font-size: 12.5px;
+    }
+
+    button.danger:hover {
+      background: rgba(239, 68, 68, 0.26);
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #b7c9f0;
+      margin-bottom: 16px;
+    }
+
+    .status-bar .icon {
+      color: #6ea0ff;
+    }
+
+    /* Output Nodes */
+    .nodes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+      gap: 10px;
+    }
+
+    .node {
+      background: linear-gradient(160deg, rgba(25, 55, 130, 0.45), rgba(9, 20, 49, 0.9));
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+
+    .node span {
+      display: block;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .node strong {
+      font-size: 18px;
+      color: #ffffff;
+    }
+
+    /* Dynamic List */
+    .add-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .task-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 10px 14px;
+      font-size: 14px;
+    }
+
+    .task-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #e8efff;
+    }
+
+    .idx-pill {
+      background: var(--accent-soft);
+      color: #8cb2ff;
+      border: 1px solid var(--border);
+      font-family: Consolas, monospace;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 32px;
+      padding: 24px 0 36px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .creators {
+      margin-top: 8px;
+      color: #e2ebff;
+      font-weight: 600;
+      font-size: 13.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap">
+      <div class="uni-box">
+        <span class="uni-ministry">Ministry of Higher Education and Scientific Research</span>
+        <span class="uni-college">Al-Hadhara University College</span>
+        <span class="uni-dept">Department of Computer Engineering Techniques</span>
+      </div>
+
+      <div class="hero-top">
+        <div class="hero-badge" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M17 2l4 4-4 4"/>
+            <path d="M3 11v-1a4 4 0 0 1 4-4h14"/>
+            <path d="M7 22l-4-4 4-4"/>
+            <path d="M21 13v1a4 4 0 0 1-4 4H3"/>
+          </svg>
+        </div>
+        <div>
+          <h1>Dynamic Loops</h1>
+          <p>How loops adapt their steps, conditions, and output at runtime</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 1. Clear Explanation -->
+    <section class="card">
+      <div class="card-head">
+        <svg class="icon" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 16v-4"/>
+          <path d="M12 8h.01"/>
+        </svg>
+        <h2>1. What Does "Dynamic Loop" Mean?</h2>
+      </div>
+
+      <p class="lead">
+        A <strong>dynamic loop</strong> does not use fixed numbers written in advance. Instead, it decides
+        how many times to run, how big each jump (step) is, or which items to keep while the program is
+        actually running.
+      </p>
+
+      <div class="simple-grid">
+        <div class="mini-box">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24">
+              <path d="M12 20h9"/>
+              <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+            </svg>
+            Static Loop
+          </h3>
+          <p>Fixed limit (e.g. always 1 to 10). Same behavior every single time you run it.</p>
+        </div>
+
+        <div class="mini-box">
+          <h3>
+            <svg class="icon" viewBox="0 0 24 24">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+            </svg>
+            Dynamic Loop
+          </h3>
+          <p>Reads live values (start, end, step, filter, or list length) and builds the result on the fly.</p>
+        </div>
+      </div>
+
+      <pre><code>for (let i = start; i &lt;= endLimit; i += step) {
+  if (matchesCondition(i)) createBox(i);
+}</code></pre>
+    </section>
+
+    <!-- 2. Interactive Simulator -->
+    <section class="card">
+      <div class="card-head">
+        <svg class="icon" viewBox="0 0 24 24">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        <h2>2. Interactive Loop Simulator</h2>
+      </div>
+
+      <p class="lead">
+        Change any input below and click <strong>Run Loop</strong>. Watch how the loop changes its steps
+        and output automatically.
+      </p>
+
+      <div class="controls">
+        <div class="field">
+          <label for="startVal">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            Start Value
+          </label>
+          <input type="number" id="startVal" value="1" />
+        </div>
+
+        <div class="field">
+          <label for="endVal">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+            End Limit
+          </label>
+          <input type="number" id="endVal" value="10" />
+        </div>
+
+        <div class="field">
+          <label for="stepVal">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            Step Size
+          </label>
+          <input type="number" id="stepVal" value="1" min="1" />
+        </div>
+
+        <div class="field">
+          <label for="filterMode">
+            <svg class="icon" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            Filter Condition
+          </label>
+          <select id="filterMode">
+            <option value="all">Show All</option>
+            <option value="even">Even Numbers Only</option>
+            <option value="odd">Odd Numbers Only</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button id="runBtn" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+          Run Loop
+        </button>
+        <button id="clearBtn" type="button" class="ghost">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>
+          Clear Output
+        </button>
+      </div>
+
+      <div class="status-bar" id="statusBar">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <span id="statusText">Ready</span>
+      </div>
+
+      <div class="nodes-grid" id="nodesGrid"></div>
+    </section>
+
+    <!-- 3. Dynamic Array List -->
+    <section class="card">
+      <div class="card-head">
+        <svg class="icon" viewBox="0 0 24 24">
+          <line x1="8" y1="6" x2="21" y2="6"/>
+          <line x1="8" y1="12" x2="21" y2="12"/>
+          <line x1="8" y1="18" x2="21" y2="18"/>
+          <line x1="3" y1="6" x2="3.01" y2="6"/>
+          <line x1="3" y1="12" x2="3.01" y2="12"/>
+          <line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+        <h2>3. Dynamic List (Loop Over Changing Data)</h2>
+      </div>
+
+      <p class="lead">
+        Here the loop runs <strong>list.length</strong> times. Add or delete an item and the list
+        updates itself immediately.
+      </p>
+
+      <div class="add-box">
+        <input type="text" id="newTaskInput" placeholder="Type a new item and press Add..." />
+        <button id="addTaskBtn" type="button">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+          Add
+        </button>
+      </div>
+
+      <ul class="task-list" id="taskList"></ul>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Department of Computer Engineering Techniques — Web Programming</p>
+    <p class="creators">Created by: Ibrahim Khalid, Nadhir Salim, Khalid Bayan</p>
+  </footer>
+
+  <script>
+    const startVal = document.getElementById("startVal");
+    const endVal = document.getElementById("endVal");
+    const stepVal = document.getElementById("stepVal");
+    const filterMode = document.getElementById("filterMode");
+    const runBtn = document.getElementById("runBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const nodesGrid = document.getElementById("nodesGrid");
+    const statusText = document.getElementById("statusText");
+
+    function runLoop() {
+      const start = parseInt(startVal.value, 10);
+      const end = parseInt(endVal.value, 10);
+      const step = parseInt(stepVal.value, 10);
+      const mode = filterMode.value;
+
+      nodesGrid.innerHTML = "";
+
+      if (Number.isNaN(start) || Number.isNaN(end) || Number.isNaN(step) || step <= 0) {
+        statusText.textContent = "Enter valid numbers and make sure Step is greater than 0.";
+        return;
+      }
+
+      if (end - start > 400) {
+        statusText.textContent = "Range is too big. Keep the difference at or below 400.";
+        return;
+      }
+
+      let loopsCount = 0;
+      let shownCount = 0;
+
+      for (let i = start; i <= end; i += step) {
+        loopsCount++;
+
+        if (mode === "even" && i % 2 !== 0) continue;
+        if (mode === "odd" && i % 2 === 0) continue;
+
+        shownCount++;
+        const card = document.createElement("div");
+        card.className = "node";
+        card.innerHTML = `<span>Pass #${loopsCount}</span><strong>${i}</strong>`;
+        nodesGrid.appendChild(card);
+      }
+
+      statusText.textContent = `Loop ran ${loopsCount} time(s) • Displayed ${shownCount} item(s)`;
+    }
+
+    runBtn.addEventListener("click", runLoop);
+
+    clearBtn.addEventListener("click", () => {
+      nodesGrid.innerHTML = "";
+      statusText.textContent = "Output cleared.";
+    });
+
+    const newTaskInput = document.getElementById("newTaskInput");
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    const taskList = document.getElementById("taskList");
+
+    const tasks = [
+      "Read start and end values",
+      "Check loop condition each pass",
+      "Render items dynamically"
+    ];
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+
+      for (let i = 0; i < tasks.length; i++) {
+        const li = document.createElement("li");
+        li.className = "task-item";
+        li.innerHTML = `
+          <div class="task-left">
+            <span class="idx-pill">#${i + 1}</span>
+            <span>${tasks[i]}</span>
+          </div>
+          <button type="button" class="danger" onclick="deleteTask(${i})">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            Remove
+          </button>
+        `;
+        taskList.appendChild(li);
+      }
+    }
+
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      renderTasks();
+    }
+
+    addTaskBtn.addEventListener("click", () => {
+      const text = newTaskInput.value.trim();
+      if (!text) return;
+      tasks.push(text);
+      newTaskInput.value = "";
+      renderTasks();
+    });
+
+    newTaskInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") addTaskBtn.click();
+    });
+
+    runLoop();
+    renderTasks();
+  </script>
+</body>
+</html>
